@@ -8,6 +8,8 @@ def main():
     db = parse.Database()
     db.parseFile()
     db.doencaPorSexo()
+    db.doencaPorEscaloes()
+    db.doencaPorColestrol()
 
 if __name__ == "__main__":
     main()

@@ -55,13 +55,98 @@ class Database:
 
     def doencaPorSexo(self):
         res = {}
-        for k in self.properties["temDoença"]:
+        for k in self.properties["sexo"]:
+            if self.properties["sexo"][k] not in res:
+                res.update({self.properties["sexo"][k]: [0, 0]})
+            aux = res[self.properties["sexo"][k]]
+            sex = aux[0] + 1
+            num = aux[1]
             if self.properties["temDoença"][k] == 1:
-                if self.properties["sexo"][k] not in res:
-                    res.update({self.properties["sexo"][k]:0})
-                num = res[self.properties["sexo"][k]]
-                res.update({self.properties["sexo"][k]:num+1})
+                num += 1
+            res.update({self.properties["sexo"][k]: [sex, num]})
 
         print("DOENCAS POR SEXO:\n")
         for k in res:
-            print("Sexo " + str(k) + " tem " + str(res[k]) + " doentes.\n")
+            print("Sexo " + str(k) + " possui " + str(res[k][1]) + " doentes em " + str(res[k][0]) + " indivíduos.\n")
+
+    def minMaxdeCriterio(self,criterio):
+        min = 0
+        max = 0
+        f = 1
+        for k in self.properties[criterio]:
+            if f == 1:
+                max = self.properties[criterio][k]
+                min = self.properties[criterio][k]
+                f = 0
+
+            if self.properties[criterio][k] > max:
+                max = self.properties[criterio][k]
+
+            if self.properties[criterio][k] < min:
+                min = self.properties[criterio][k]
+
+        #print(str(min) + " e " + str(max) + "\n")
+        return (min,max)
+
+
+    def gerarEscaloes(self,minMax,intervalo):
+        res = []
+        i, mx = minMax
+        while (mx - i) >= intervalo:
+            aux = (i, i + intervalo)
+            res.append(aux)
+            i = i + intervalo + 1
+
+        if (mx-i) > 0:
+            aux = (i, mx)
+            res.append(aux)
+
+        dic = {}
+
+        for r in res:
+            dic.update({r:0})
+
+        #print(dic)
+        return dic
+
+    def doencaPorEscaloes(self):
+        escaloes = self.gerarEscaloes(self.minMaxdeCriterio("idade"),4)
+        #print(escaloes)
+        for k in self.properties["idade"]:
+            if self.properties["temDoença"][k] == 1:
+                for e in escaloes:
+                    if e[0] <= self.properties["idade"][k] <= e[1]:
+                        n = escaloes[e]
+                        escaloes.update({e:n+1})
+                        break
+
+        print(str(escaloes) + "\n")
+
+    """
+        soma = 0
+        for e in escaloes:
+            soma = soma + escaloes[e]
+
+        print(soma)
+    """
+
+    def doencaPorColestrol(self):
+        intervalos = self.gerarEscaloes(self.minMaxdeCriterio("colestrol"),10)
+        #print(intervalos)
+        for k in self.properties["colestrol"]:
+            if self.properties["temDoença"][k] == 1:
+                for i in intervalos:
+                    if i[0] <= self.properties["colestrol"][k] <= i[1]:
+                        n = intervalos[i]
+                        intervalos.update({i: n + 1})
+                        break
+
+        print(str(intervalos) + "\n")
+
+    """
+        soma = 0
+        for e in intervalos:
+            soma = soma + intervalos[e]
+
+        print(soma)
+    """
