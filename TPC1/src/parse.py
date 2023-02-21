@@ -21,11 +21,14 @@ class Database:
         if len(entry) != 6:
             return False
 
-       # if not entry[0].isdigit() or not entry[2].isdigit() or not entry[3].isdigit() or not entry[4].isdigit():
-       #     return False
+        if not (entry[0].isdigit() and entry[2].isdigit() and entry[3].isdigit() and entry[4].isdigit()):
+            return False
 
-        #if int(entry[5]) != 1 or int(entry[5]) != 0:
+        #if entry[0] <= 0 and entry[2] <= 0 and entry[3] <= 0 and entry[4] <= 0:
         #    return False
+
+        if int(entry[5]) != 1 and int(entry[5]) != 0:
+            return False
 
         return True
 
@@ -68,6 +71,8 @@ class Database:
         print("DOENCAS POR SEXO:\n")
         for k in res:
             print("Sexo " + str(k) + " possui " + str(res[k][1]) + " doentes em " + str(res[k][0]) + " indivíduos.\n")
+
+        return res
 
     def minMaxdeCriterio(self,criterio):
         min = 0
@@ -122,6 +127,8 @@ class Database:
 
         print(str(escaloes) + "\n")
 
+        return escaloes
+
     """
         soma = 0
         for e in escaloes:
@@ -143,6 +150,8 @@ class Database:
 
         print(str(intervalos) + "\n")
 
+        return intervalos
+
     """
         soma = 0
         for e in intervalos:
@@ -150,3 +159,81 @@ class Database:
 
         print(soma)
     """
+
+    def printTabelaS(self,dist):
+        for key in dist:
+            print("-----------------------------")
+            string = '|'
+            comp = int((13 - len(key)) / 2)
+            for i in range(comp):
+                string += ' '
+            string += str(key)
+            for i in range(comp):
+                string += ' '
+            string += "|"
+            comp = 13 - len(str(dist[key]))
+            if comp % 2 != 0:
+                comp = int(comp / 2)
+                comp1 = comp + 1
+            else:
+                comp = int(comp / 2)
+                comp1 = comp
+            for i in range(comp):
+                string += ' '
+            string += str(dist[key])
+            for i in range(comp1):
+                string += ' '
+            print(string + "|")
+        print("-----------------------------")
+
+    def printTabelaA(self,dist):
+        for key in dist:
+            print("----------------------------------")
+            string = '|'
+            comp = int((13 - len(key)) / 2)
+            for i in range(comp):
+                string += ' '
+            string += str(key)
+            for i in range(comp):
+                string += ' '
+            string += "|"
+            comp = 13 - len(str(dist[key]))
+            if comp % 2 != 0:
+                comp = int(comp / 2)
+                comp1 = comp + 1
+            else:
+                comp = int(comp / 2)
+                comp1 = comp
+            for i in range(comp):
+                string += ' '
+            string += str(dist[key])
+            for i in range(comp1):
+                string += ' '
+            print(string + "|")
+        print("----------------------------------")
+
+    def printTabelaC(self,dist):
+        for key in dist:
+            print("------------------------------------")
+            string = '|'
+            comp = int((13 - len(key)) / 2)
+            for i in range(comp):
+                string += ' '
+            string += str(key)
+            for i in range(comp):
+                string += ' '
+            string += "|"
+            comp = 13 - len(str(dist[key]))
+            if comp % 2 != 0:
+                comp = int(comp / 2)
+                comp1 = comp + 1
+            else:
+                comp = int(comp / 2)
+                comp1 = comp
+            for i in range(comp):
+                string += ' '
+            string += str(dist[key])
+            for i in range(comp1):
+                string += ' '
+            print(string + "|")
+        print("------------------------------------")
