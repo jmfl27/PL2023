@@ -1,3 +1,5 @@
+from matplotlib import pyplot
+
 class Database:
     def __init__(self):
         self.properties = {
@@ -237,3 +239,23 @@ class Database:
                 string += ' '
             print(string + "|")
         print("------------------------------------")
+
+    def criaGrafico(self, param, ttl, xname, yname, col, sexo):
+        if sexo:
+            x = list(param.keys())
+            y = []
+            for t in param.values():
+                y.append(t[1])
+                y = list(y)
+        else:
+            x = []
+            for t in param.keys():
+                aux = "[" + str(t[0]) + "-" + str(t[1]) + "]"
+                x.append(aux)
+            y = list(param.values())
+
+        pyplot.bar(x,y,color = col)
+        pyplot.xlabel(xname)
+        pyplot.ylabel(yname)
+        pyplot.title(ttl)
+        pyplot.show()
