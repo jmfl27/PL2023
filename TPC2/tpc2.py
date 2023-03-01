@@ -9,13 +9,12 @@ class Somador:
         on = ["on","ON","On","oN"]
         off = ["off","OFF","oFF","ofF","Off","OFf","OfF","oFf"]
         s = ""
+        line += "/n"
         for d in line:
-            d = chr(d)
             # se for um digito, guarda-o no leitor
             if d.isdigit():
                 num = True
                 s += d
-
             # caso seja um carater
             else:
                 # se não for um digito e caso se tenha começado a ler um numero antes, soma-o (caso on) e dá reset ao leitor
@@ -27,11 +26,10 @@ class Somador:
 
                 # se for igual, imprime o resultado atual da soma
                 if d == "=":
-                    print("A soma é:" + str(self.soma))
+                    print("A soma é: " + str(self.soma))
 
                 # se detetar um o, assinala como possivel on ou off
                 if d == "o" or d == "O":
-                    s += d
                     hasO = True
 
                 # se tiver detetado um o e consequentemente on ou off, muda o somador para tal
@@ -46,4 +44,3 @@ class Somador:
                             self.on = False
                         hasO = False
                         s = ""
-
