@@ -52,7 +52,7 @@ class Database:
                 res += "Observacoes: " + str(p[1]) + "\n"
                 break
     """
-        res += "Pasta: " + str(self.properties["pasta"].get(id)) + "\n"
+        #res += "Pasta: " + str(self.properties["pasta"].get(id)) + "\n"
         res += "Data: " + str(self.properties["data"].get(id)) + "\n"
         res += "Nome: " + str(self.properties["nome"].get(id)) + "\n"
         res += "Pai: " + str(self.properties["pai"].get(id)) + "\n"
@@ -60,27 +60,36 @@ class Database:
         res += "Observacoes: " + str(self.properties["obs"].get(id)) + "\n"
         print(res)
 
-    def notExists(self,nome,mae):
-        if nome in self.properties["nome"].values():
-            
-
-
 
     def parseFile(self):
         file1 = open('processos.txt', 'r')
         lines = file1.readlines()
+
         i = 0
+        val = 0
+
+        # regex para linha valida
+        model = re.compile(r'^(?P<pasta>[0-9]+)::(?P<data>\d{4}-\d{2}-\d{2})::(?P<nome>[a-zA-Z ]+)::(?P<pai>[a-zA-Z ]+)?::(?P<mae>[a-zA-Z ,]+)?::(?P<obs>.+)[:]+$')
+        check = set()
+
         for l in lines:
-            splited = re.split(r"::",l)
-                if self.notExists(splited[2],splited[4]):
-                self.properties["pasta"].update({i: splited[0]})
-                self.properties["data"].update({i: splited[1]})
-                self.properties["nome"].update({i: splited[2]})
-                self.properties["pai"].update({i: splited[3]})
-                self.properties["mae"].update({i: splited[4]})
-                if splited[5]:
-                    self.properties["obs"].update({i:{splited[5]}})
-                i += 1
+            val += 1
+            if l.strip():
+                r = model.match(l)
+                if r:
+                    # se par de mae e filho ja existe na db, ignora essa linha
+                    c = (r.group("nome"),r.group("mae"))
+                    if c not in check:
+                        self.properties["pasta"].update({i : r.group("pasta")})
+                        self.properties["data"].update({i:r.group("data")})
+                        self.properties["nome"].update({i: r.group("nome")})
+                        self.properties["pai"].update({i: r.group("pai")})
+                        self.properties["mae"].update({i: r.group("mae")})
+                        if r.group("obs"):
+                            self.properties["obs"].update({i:{r.group("obs")}})
+                        check.add(c)
+                        i += 1
 
-
+        print("Li " + str(val) + " linhas.")
+        print("Li " + str(i) + " linhas validas.")
 
