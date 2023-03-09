@@ -164,3 +164,30 @@ class Database:
             res.update({ s: { "p" : ordnP,"a" : ordnA } })
 
         self.printEx2(res)
+
+    def trueStr(self,s):
+        aux = str(s)[2:]
+        return str(aux[:len(aux) - 2])
+
+    def ex3(self):
+        relacoes = {}
+        regex = re.compile(r",+(?P<parent>.+?)(?=\.)")
+        for o in self.properties["obs"]:
+            #EXPRESSAO REGEX: ,+(.+?)(?=\.)
+            print(self.trueStr(self.properties["obs"][o]))
+            r = regex.match(self.trueStr(self.properties["obs"][o]))
+            print(r)
+            if r:
+                if r.group("parent") not in relacoes:
+                    relacoes.update({r.group("parent") : 0})
+                aux = relacoes[r.group("parent")]
+                relacoes.update({r.group("parent"): aux + 1})
+
+        print(relacoes)
+
+        print("-----------------------------------")
+        print("| FREQUENCIA DOS TIPOS DE RELAÇAO  |")
+        print("-----------------------------------")
+        for r in relacoes:
+            print(str(r) + ":" + str(relacoes.get(r)))
+            print("-----------------------------------")

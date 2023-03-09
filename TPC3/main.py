@@ -6,7 +6,8 @@ def main():
     db.parseFile()
 
     #db.ex1()
-    db.ex2()
+    #db.ex2()
+    db.ex3()
 
 if __name__ == "__main__":
         main()
