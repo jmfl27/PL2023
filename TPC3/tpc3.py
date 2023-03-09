@@ -108,3 +108,59 @@ class Database:
         for r in res:
             print("|     " + str(r) + "      |      " + str(res.get(r)) + "       |")
             print("-----------------------------------")
+
+    def printEx2(self,secs):
+        print("-----------------------------------")
+        print("|     TOP 5 NOMES POR SECULO      |")
+        print("-----------------------------------")
+        for s in secs:
+            print("-----------------------------------")
+            print("|            SECULO " + str(s) +"            |")
+            print("-----------------------------------")
+            print("|         NOMES PROPRIOS          |")
+            print("-----------------------------------")
+            for n in secs[s]["p"]:
+                print(str(n) + " : " + str(secs[s]["p"][n]))
+            print("-----------------------------------")
+            print("|            APELIDOS             |")
+            print("-----------------------------------")
+            for n in secs[s]["a"]:
+                print(str(n) + " : " + str(secs[s]["a"][n]))
+            print("\n")
+
+    def ex2(self):
+        secs = {}
+        for d in self.properties["data"]:
+            ano = re.match(r"\d{4}", self.properties["data"][d]).group()
+            sec = int(ano) // 100 + 1
+            # ver se seculo ja esta no dicionario
+            # { SECULO : { "p" : { {NOME PROPRIO : OCURRENCIAS} } , "a" : { APELIDO : OCURRENCIAS } }
+            if sec not in secs:
+                secs.update({ sec: { "p" : {},"a" : {} } })
+
+            nomes = re.split(r"\s",self.properties["nome"][d])
+            nomeP = nomes[0]
+
+            # dict dos proprios
+            if nomeP not in secs[sec]["p"]:
+                secs[sec]["p"].update({nomeP:0})
+            auxP = secs[sec]["p"][nomeP]
+            secs[sec]["p"].update({nomeP:auxP+1})
+
+            # dict dos apelidos
+            if len(nomes) > 1:
+                nomeA = nomes[len(nomes)-1]
+                if nomeA not in secs[sec]["a"]:
+                    secs[sec]["a"].update({nomeA: 0})
+                auxA = secs[sec]["a"][nomeA]
+                secs[sec]["a"].update({nomeA: auxA + 1})
+
+        # ordenar
+        print(secs)
+        res = {}
+        for s in secs:
+            ordnP = dict(sorted(secs[s]["p"].items(), key=lambda x:x[1], reverse=True)[:5])
+            ordnA = dict(sorted(secs[s]["a"].items(), key=lambda x:x[1], reverse=True)[:5])
+            res.update({ s: { "p" : ordnP,"a" : ordnA } })
+
+        self.printEx2(res)
