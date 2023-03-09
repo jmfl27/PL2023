@@ -171,13 +171,15 @@ class Database:
 
     def ex3(self):
         relacoes = {}
-        regex = re.compile(r",+(?P<parent>.+?)(?=\.)")
         for o in self.properties["obs"]:
-            #EXPRESSAO REGEX: ,+(.+?)(?=\.)
-            print(self.trueStr(self.properties["obs"][o]))
-            r = regex.match(self.trueStr(self.properties["obs"][o]))
-            print(r)
-            if r:
+            #EXPRESSAO REGEX BASE: ,+(.+?)(?=\.)
+            #print(self.trueStr(self.properties["obs"][o]))
+            regex = r",+(?P<parent>\w+\s?\w+\s?\w+?)(?=\.\s*(?i)Proc)"
+            # A melhorar no futuro:
+            # nao apanha os registos nem relacoes com mais de 4 palvaras, no entanto, as que apanha sao relacoes validas
+            r = re.search(regex,self.trueStr(self.properties["obs"][o]))
+            if r is not None:
+                print(r.group("parent"))
                 if r.group("parent") not in relacoes:
                     relacoes.update({r.group("parent") : 0})
                 aux = relacoes[r.group("parent")]
@@ -189,5 +191,8 @@ class Database:
         print("| FREQUENCIA DOS TIPOS DE RELAÇAO  |")
         print("-----------------------------------")
         for r in relacoes:
-            print(str(r) + ":" + str(relacoes.get(r)))
+            print("|  "+str(r) + " :    " + str(relacoes.get(r)))
             print("-----------------------------------")
+
+    def ex4(self):
+        
