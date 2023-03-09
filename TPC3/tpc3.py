@@ -1,3 +1,4 @@
+import json
 import re
 
 class Database:
@@ -194,5 +195,20 @@ class Database:
             print("|  "+str(r) + " :    " + str(relacoes.get(r)))
             print("-----------------------------------")
 
-    def ex4(self):
-        
+    def ex4(self,n):
+        dict = {"registos" : []}
+        i = 0
+        while i<n:
+            aux = {
+                "pasta":self.properties["pasta"][i],
+                "data":self.properties["data"][i],
+                "nome":self.properties["nome"][i],
+                "pai" :self.properties["pai"][i],
+                "mae" :self.properties["mae"][i],
+                "obs" :self.trueStr(self.properties["obs"][i])
+            }
+            dict["registos"].append(aux)
+            i+=1
+
+        with open("registos4.json","w") as outfile:
+            json.dump(dict,outfile, indent=" ")
