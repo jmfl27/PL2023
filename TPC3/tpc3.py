@@ -93,3 +93,18 @@ class Database:
         print("Li " + str(val) + " linhas.")
         print("Li " + str(i) + " linhas validas.")
 
+    def ex1(self):
+        res = {}
+        for d in self.properties["data"]:
+            ano = re.match(r"\d{4}", self.properties["data"][d]).group()
+            if ano not in res:
+                res.update({ano:0})
+            aux = res.get(ano)
+            res.update({ano:aux + 1})
+
+        print("-----------------------------------")
+        print("|        PROCESSOS POR ANO        |")
+        print("-----------------------------------")
+        for r in res:
+            print("|     " + str(r) + "      |      " + str(res.get(r)) + "       |")
+            print("-----------------------------------")

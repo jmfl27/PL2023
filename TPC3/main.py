@@ -5,6 +5,7 @@ def main():
     db = tpc3.Database()
     db.parseFile()
 
+    db.ex1()
 
 if __name__ == "__main__":
         main()
