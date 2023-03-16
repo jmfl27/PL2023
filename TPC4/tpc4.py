@@ -39,7 +39,6 @@ class Database:
                 while s < len(tipos):
                     # case: tipo{3,5} e tipo{3,5}::<param>
                     if ('{' in tipos[s]) and ('}' not in tipos[s]):
-                        #print("LISTA DE DOIS")
                         tipos[s] = tipos[s] + "," + tipos[s+1]
                         skip = True
 
@@ -83,23 +82,15 @@ class Database:
 
             # linha dos valores
             else:
-                #print(self.properties)
                 valores = re.split(",", l)
                 # if order == lista, ignorar esse e so contam os que tao pra frente
-                #print(order)
-                #print(valores)
-                #print(pLista)
-                #print(pLista and len(valores) != (len(order) - 1))
-
                 # se houver uma lista
                 if pLista:
                     # verifica se o num de campos e valido
                     if len(valores) != (len(order) - 1):
-                        #print("continue")
                         continue
                 # verifica se o num de campos e valido
                 elif len(valores) != len(order):
-                    #print("continue")
                     continue
 
                 # controla o campo em que o valor e inserido
@@ -107,12 +98,10 @@ class Database:
                 for v in valores:
                     # se soma
                     if re.match(rgxSum,order[j]) != None:
-                        #print("SOMA")
                         somaF = True
 
                     # se media
                     elif re.match(rgxMedia,order[j]) != None:
-                        #print("MEDIA")
                         mediaF = True
 
                     # se houver campo que é lista
@@ -133,12 +122,9 @@ class Database:
                         else:
                             # se ainda nao existir lista para a linha no dict, cria
                             if i not in self.properties[nameLista].keys():
-                                #print("nao ha i, elemento: " + str(j))
                                 self.properties[nameLista].update({i:[v]})
                             # adiciona valor a lista
                             else:
-                                #print("ja ha i, elemento: " + str(j))
-                                #print("aux: " + str(j) + " "+ str(self.properties.get(nameLista).get(i)))
                                 self.properties[nameLista][i] += [v]
 
                     # se valor normal, ou caso haja uma funcao de agregacao e estamos no ultimo elemento da lista
@@ -166,5 +152,15 @@ class Database:
         return i
 
     def criaJson(self,ficheiro,linhas):
+        res = []
         i = 0
-        while(i <= linhas)
+
+        while i < linhas:
+            aux = {}
+            for p in self.properties:
+                aux[p] = self.properties[p][i]
+            res.append(aux)
+            i += 1
+
+        out_file = open(ficheiro, "w")
+        json.dump(res, out_file, indent=' ')
