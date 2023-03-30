@@ -2,7 +2,7 @@ import ply.lex as lex
 
 literals = [';','=','(',')','{','}','>','<','[',']','+','-','*','/']
 
-tokens = ['WHILE','FOR','IF','ELSE','NUM','FUNCTION','RANGE', 'INT', 'IN','VAR','COM','COM_O','COM_E','COM_TEXT']
+tokens = ['WHILE','FOR','IF','ELSE','NUM','FUNCTION','RANGE', 'TYPE', 'IN','VAR','COM','COM_O','COM_E','COM_TEXT']
 
 states = (
     ('COMMENT','exclusive'),
@@ -36,8 +36,8 @@ def t_RANGE(t):
     r'\.\.'
     return t
 
-def t_INT(t):
-    r'int'
+def t_TYPE(t):
+    r'int|float|char|string|boolean'
     return t
 
 def t_IN(t):
